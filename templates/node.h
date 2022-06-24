@@ -15,7 +15,7 @@
  * INCLUDES
  * =====================================================
  */
-#include "../interfaces/node-intf.h"
+#include "interfaces/node-intf.h"
 #include <iostream>
 #include <string>
 
