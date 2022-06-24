@@ -10,56 +10,69 @@
 #ifndef _NODE_H_
 #define _NODE_H_
 
+/**
+ * =====================================================
+ * INCLUDES
+ * =====================================================
+ */
+#include "../interfaces/node-intf.h"
 #include <iostream>
 #include <string>
 
+/**
+ * =====================================================
+ * CLASS DEFINITIONS
+ * =====================================================
+ */
+
+/**
+ * @brief Template class for a node. Inherits from the
+ * interface for a node class.
+ * @tparam T typename
+ */
 template <typename T>
-class NODE {
+class NODE : public NODE_INTF<T> {
 private:
-    T myVal;
     std::string myId;
+    T myVal;
 
 public:
-    /**
-     * @brief Construct a new NODE object.
-     */
-    NODE() {};
+    // delete default & copy constructors and assignment operator.
+    NODE() = delete;
+    NODE(NODE const&) = delete;
+    NODE& operator=(NODE const&) = delete;
 
-    NODE(T value, std::string id)
-        : myVal(value)
+    // constructor
+    explicit NODE(std::string id, T value)
+        : NODE_INTF<T>()
         , myId(id)
+        , myVal(value)
     {
     }
 
-    /**
-     * @brief Destroy the NODE object.
-     */
-    ~NODE() {};
+    // destructor
+    ~NODE() override {};
 
-    /**
-     * @brief Get the value stored in the node.
-     * @return value of node of type T
-     */
-    T getValue(void) const { return this->myVal; }
+    // return id of object
+    std::string getID(void) const override
+    {
+        return this->myId;
+    }
 
-    /**
-     * @brief Get the ID of the node.
-     * @return a string represting the ID.
-     */
-    std::string getID(void) const { return this->myId; }
+    // return value stored in object
+    T getValue(void) const override
+    {
+        return this->myVal;
+    }
 
-    /**
-     * @brief Return a string representation of object.
-     * Note: declarationa and definition is split to provide
-     * template specialization.
-     */
-    std::string toString(void) const;
+    // declaration and definition is split due to
+    // template specializations required.
+    std::string toString(void) const override;
 
     /**
      * @brief Overload stream insertion operator.
      * @param out Output stream
      * @param node Object of Node<T> class.
-     * @return Output stream
      */
     friend std::ostream& operator<<(std::ostream& os, const NODE<T>& nodeObj)
     {
@@ -68,9 +81,7 @@ public:
     }
 };
 
-/**
- * @brief Template method definition for toString().
- */
+// template method
 template <typename T>
 std::string NODE<T>::toString(void) const
 {
@@ -78,9 +89,7 @@ std::string NODE<T>::toString(void) const
         + ", Node ID: " + this->getID() + "]";
 }
 
-/**
- * @brief Template specialization for toString() when type = char.
- */
+// template specialization when type = char
 template <>
 std::string NODE<char>::toString(void) const
 {
@@ -88,9 +97,7 @@ std::string NODE<char>::toString(void) const
         + ", Node ID: " + this->getID() + "]";
 }
 
-/**
- * @brief Template specialization for toString() when type = std::string.
- */
+// template specialization when type = string
 template <>
 std::string NODE<std::string>::toString(void) const
 {
