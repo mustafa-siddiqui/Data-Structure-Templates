@@ -15,6 +15,7 @@
  * INCLUDES
  * =====================================================
  */
+
 #include <memory>
 #include <string>
 
@@ -23,6 +24,7 @@
  * FORWARD DECLARATIONS
  * =====================================================
  */
+
 template <typename T>
 class NODE;
 
@@ -30,6 +32,10 @@ class NODE;
  * =====================================================
  * CLASS DEFINITIONS
  * =====================================================
+ */
+
+/**
+ * @brief Interface for a node class.
  */
 template <typename T>
 class NODE_INTF {
@@ -52,21 +58,33 @@ public:
     virtual std::string getID() const = 0;
 
     /**
-     * @brief Return a string representation of object.
-     */
-    virtual std::string toString() const = 0;
-
-    /**
      * @brief Set the next node of this node to the
      * given node.
-     * @param node Node to be set as next.
+     * @param nodePtr Pointer to node to be set as next.
      */
-    virtual void setNextNode(NODE<T> const& node) = 0;
+    virtual void setNextNodePtr(std::shared_ptr<NODE_INTF<T>>& nodePtr) = 0;
 
     /**
      * @brief Get a shared pointer to the next node.
      */
-    virtual std::shared_ptr<NODE<T>> getNextNode() const = 0;
+    virtual std::shared_ptr<NODE_INTF<T>> getNextNodePtr() const = 0;
+
+    /**
+     * @brief Set the node previous of this node to
+     * the given node.
+     * @param nodePtr Pointer to node to be set as previous
+     */
+    virtual void setPrevNodePtr(std::shared_ptr<NODE_INTF<T>>& nodePtr) = 0;
+
+    /**
+     * @brief Get a shared pointer to the previous node.
+     */
+    virtual std::shared_ptr<NODE_INTF<T>> getPrevNodePtr() const = 0;
+
+    /**
+     * @brief Return a string representation of object.
+     */
+    virtual std::string toString() const = 0;
 };
 
 #endif /* _NODE_INTF_H_ */
