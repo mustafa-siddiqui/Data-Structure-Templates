@@ -15,6 +15,9 @@ FILES = src/main.cc
 all:
 	${CXX} ${CXXFLAGS} -std=c++11 ${INC} ${FILES} -o ds
 
+redirect:
+	${CXX} ${CXXFLAGS} -std=c++11 ${INC} ${FILES} -o ds > makeLog.txt 2>&1
+
 clean:
 	rm ds
  
