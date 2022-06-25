@@ -15,7 +15,16 @@
  * INCLUDES
  * =====================================================
  */
+#include <memory>
 #include <string>
+
+/**
+ * =====================================================
+ * FORWARD DECLARATIONS
+ * =====================================================
+ */
+template <typename T>
+class NODE;
 
 /**
  * =====================================================
@@ -34,18 +43,30 @@ public:
      * @brief Get the value stored in the node.
      * @return value of node of type T
      */
-    virtual T getValue(void) const = 0;
+    virtual T getValue() const = 0;
 
     /**
      * @brief Get the ID of the node.
      * @return a string represting the ID.
      */
-    virtual std::string getID(void) const = 0;
+    virtual std::string getID() const = 0;
 
     /**
      * @brief Return a string representation of object.
      */
-    virtual std::string toString(void) const = 0;
+    virtual std::string toString() const = 0;
+
+    /**
+     * @brief Set the next node of this node to the
+     * given node.
+     * @param node Node to be set as next.
+     */
+    virtual void setNextNode(NODE<T> const& node) = 0;
+
+    /**
+     * @brief Get a shared pointer to the next node.
+     */
+    virtual std::shared_ptr<NODE<T>> getNextNode() const = 0;
 };
 
 #endif /* _NODE_INTF_H_ */
