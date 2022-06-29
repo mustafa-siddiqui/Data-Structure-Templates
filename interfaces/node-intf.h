@@ -62,7 +62,8 @@ public:
      * given node.
      * @param nodePtr Pointer to node to be set as next.
      */
-    virtual void setNextNodePtr(std::shared_ptr<NODE_INTF<T>>& nodePtr) = 0;
+    virtual void setNextNodePtr(
+        std::shared_ptr<NODE_INTF<T>>& nodePtr) = 0;
 
     /**
      * @brief Get a shared pointer to the next node.
@@ -74,7 +75,8 @@ public:
      * the given node.
      * @param nodePtr Pointer to node to be set as previous
      */
-    virtual void setPrevNodePtr(std::shared_ptr<NODE_INTF<T>>& nodePtr) = 0;
+    virtual void setPrevNodePtr(
+        std::shared_ptr<NODE_INTF<T>>& nodePtr) = 0;
 
     /**
      * @brief Get a shared pointer to the previous node.

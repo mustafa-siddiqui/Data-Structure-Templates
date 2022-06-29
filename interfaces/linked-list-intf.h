@@ -16,9 +16,10 @@
  * =====================================================
  */
 
+#include <string>
+
 #include "expected-lite/include/nonstd/expected.hpp"
 #include "interfaces/node-intf.h"
-#include <string>
 
 /**
  * =====================================================
@@ -81,7 +82,8 @@ public:
      * @param nodePresent Specified node in the list.
      * @param nodeToBeInserted Node object to be inserted in the list.
      */
-    virtual nonstd::expected<void, ERROR_CODES> insertBefore(NODE_INTF<T>& nodePresent, NODE_INTF<T> nodeToBeInserted) = 0;
+    virtual nonstd::expected<void, ERROR_CODES> insertBefore(
+        NODE_INTF<T>& nodePresent, NODE_INTF<T> nodeToBeInserted) = 0;
 
     /**
      * @brief Create a node given its id and value and insert
@@ -92,7 +94,9 @@ public:
      * @param value Value stored in node to be inserted
      * @return nothing if successful, error code otherwise
      */
-    virtual nonstd::expected<void, ERROR_CODES> insertBefore(std::string const presentNodeId, std::string const id, T value) = 0;
+    virtual nonstd::expected<void, ERROR_CODES> insertBefore(
+        std::string const presentNodeId, std::string const id,
+        T value) = 0;
 
     /**
      * @brief Insert a node before a specified node in the list (if
@@ -102,7 +106,8 @@ public:
      * @param nodeToBeInserted Node object to be inserted in the list.
      * @return nothing if successful, error code otherwise
      */
-    virtual nonstd::expected<void, ERROR_CODES> insertAfter(NODE_INTF<T>& nodePresent, NODE_INTF<T> nodeToBeInserted) = 0;
+    virtual nonstd::expected<void, ERROR_CODES> insertAfter(
+        NODE_INTF<T>& nodePresent, NODE_INTF<T> nodeToBeInserted) = 0;
 
     /**
      * @brief Create a node given its id and value and insert
@@ -113,7 +118,9 @@ public:
      * @param value Value stored in node to be inserted
      * @return nothing if successful, error code otherwise
      */
-    virtual nonstd::expected<void, ERROR_CODES> insertAfter(std::string const presentNodeId, std::string const id, T value) = 0;
+    virtual nonstd::expected<void, ERROR_CODES> insertAfter(
+        std::string const presentNodeId, std::string const id,
+        T value) = 0;
 
     /**
      * @brief Delete given node from the list. Do nothing if node
@@ -121,7 +128,8 @@ public:
      * @param nodeToBeDeleted Node to delete from list
      * @return nothing if successful, error code otherwise
      */
-    virtual nonstd::expected<void, ERROR_CODES> deleteNode(NODE_INTF<T> nodeToBeDeleted) = 0;
+    virtual nonstd::expected<void, ERROR_CODES> deleteNode(
+        NODE_INTF<T> nodeToBeDeleted) = 0;
 
     /**
      * @brief Delete a given node from the list either from its id
@@ -131,21 +139,24 @@ public:
      * @param value Value of node(s) to delete
      * @return nothing if successful, error code otherwise
      */
-    virtual nonstd::expected<void, ERROR_CODES> deleteNode(std::string const id, T value = static_cast<T>(0)) = 0;
+    virtual nonstd::expected<void, ERROR_CODES> deleteNode(
+        std::string const id, T value = static_cast<T>(0)) = 0;
 
     /**
      * @brief Search for a node in the list.
      * @param node Node to search for in the list
      * @return ID of string if present, error otherwise
      */
-    virtual nonstd::expected<std::string, ERROR_CODES> find(NODE_INTF<T> node) const = 0;
+    virtual nonstd::expected<std::string, ERROR_CODES> find(
+        NODE_INTF<T> node) const = 0;
 
     /**
      * @brief Search for a node with its id in the list.
      * @param id ID of node to search
      * @return Index of node, error otherwise
      */
-    virtual nonstd::expected<int, ERROR_CODES> find(std::string const id) const = 0;
+    virtual nonstd::expected<int, ERROR_CODES> find(
+        std::string const id) const = 0;
 
     /**
      * @brief Convert linked list into a string representation.

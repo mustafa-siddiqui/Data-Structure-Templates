@@ -7,12 +7,12 @@
  *
  */
 
-#include "templates/linked-list.h"
-#include "templates/node.h"
 #include <iostream>
 
-int main(void)
-{
+#include "templates/linked-list.h"
+#include "templates/node.h"
+
+int main(void) {
     NODE<int> IntNode("one", 12);
     std::cout << IntNode << std::endl;
 
@@ -28,9 +28,10 @@ int main(void)
     NODE<std::string> StringNode("four", "hello");
     std::cout << StringNode << std::endl;
 
-    LINKED_LIST<int> LinkedList(std::make_shared<NODE<int>>(IntNode), std::make_shared<NODE<int>>(IntNode2));
-    std::cout << std::endl
-              << LinkedList << std::endl;
+    LINKED_LIST<int> LinkedList(
+        std::make_shared<NODE<int>>(IntNode),
+        std::make_shared<NODE<int>>(IntNode2));
+    std::cout << std::endl << LinkedList << std::endl;
 
     return 0;
 }
