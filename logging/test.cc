@@ -1,11 +1,11 @@
 #include <memory>
 
-#include "logger.h"
+#include "logging.h"
 
 int main(void) {
-    std::unique_ptr<LOGGER> logging = std::make_unique<LOGGER>();
+    LOGGING::logMessage("Test message");
 
-    logging->log("Testing logger");
+    LOGGING::logMessage("Test message 2");
 
     return 0;
 }
