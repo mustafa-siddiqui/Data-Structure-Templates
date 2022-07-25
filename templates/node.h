@@ -44,7 +44,8 @@ public:
     NODE() = delete;
 
     // constructor
-    explicit NODE(std::string id, T value)
+    // default values of empty string and val=0
+    explicit NODE(std::string id = "", T value = 0)
         : NODE_INTF<T>(),
           myId(id),
           myVal(value),
