@@ -19,6 +19,7 @@
 #include <iostream>
 
 #include "interfaces/node-intf.h"
+#include "logging/logging.h"
 
 /**
  * =====================================================
@@ -48,7 +49,9 @@ public:
           myId(id),
           myVal(value),
           nextNodePtr(nullptr),
-          prevNodePtr(nullptr) {}
+          prevNodePtr(nullptr) {
+        LOGGING::logMessage(this->toString() + " created");
+    }
 
     /**
      * =====================================================
@@ -57,7 +60,9 @@ public:
      */
 
     // destructor
-    ~NODE() override {}
+    ~NODE() override {
+        LOGGING::logMessage(this->toString() + " destroyed");
+    }
 
     // return id of object
     std::string getID() const override { return this->myId; }
