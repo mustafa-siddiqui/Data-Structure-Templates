@@ -19,6 +19,8 @@
 #include "error/error-codes.h"
 #include "interfaces/linked-list-intf.h"
 #include "interfaces/node-intf.h"
+#include "logging/logging.h"
+#include "templates/node.h"
 
 /**
  * =====================================================
@@ -46,6 +48,9 @@ public:
         this->headPtr->setNextNodePtr(this->tailPtr);
         this->tailPtr->setPrevNodePtr(this->headPtr);
         assert(this->headPtr != nullptr);
+
+        LOGGING::logMessage("List with " + headPtr->toString() +
+                            " at head created");
     }
 
     /**
@@ -55,31 +60,54 @@ public:
      */
 
     // destructor
-    ~LINKED_LIST() override {}
+    ~LINKED_LIST() override {
+        LOGGING::logMessage("List with " + headPtr->toString() +
+                            " at head destroyed");
+    }
 
     // append to end of list
-    void appendLast(NODE_INTF<T> node) override {}
+    void appendLast(std::shared_ptr<NODE_INTF<T>> nodePtr) override {
+        if (!nodePtr) {
+            LOGGING::logMessage(nodePtr->toString() +
+                                "null -> not added to list");
+            return;
+        }
+
+        nodePtr->setPrevNodePtr(this->tailPtr);
+        this->tailPtr->setNextNodePtr(nodePtr);
+        this->tailPtr = nodePtr;
+    }
 
     // insert at start of list
-    void insertFirst(NODE_INTF<T> node) override {}
+    void insertFirst(std::shared_ptr<NODE_INTF<T>> nodePtr) override {
+        if (!nodePtr) {
+            LOGGING::logMessage(nodePtr->toString() +
+                                " null -> not added to list");
+            return;
+        }
+
+        nodePtr->setNextNodePtr(this->headPtr);
+        this->headPtr->setPrevNodePtr(nodePtr);
+        this->headPtr = nodePtr;
+    }
 
     // insert before a node
     nonstd::expected<void, ERROR_CODES> insertBefore(
-        NODE_INTF<T>& nodePresent,
-        NODE_INTF<T> nodeToBeInserted) override {}
+        std::shared_ptr<NODE_INTF<T>> nodePresentPtr,
+        std::shared_ptr<NODE_INTF<T>> nodeToBeInsertedPtr) override {}
 
     // insert after a node
     nonstd::expected<void, ERROR_CODES> insertAfter(
-        NODE_INTF<T>& nodePresent,
-        NODE_INTF<T> nodeToBeInserted) override {}
+        std::shared_ptr<NODE_INTF<T>> nodePresentPtr,
+        std::shared_ptr<NODE_INTF<T>> nodeToBeInsertedPtr) override {}
 
     // delete a node
     nonstd::expected<void, ERROR_CODES> deleteNode(
-        NODE_INTF<T> nodeToBeDeleted) override {}
+        std::shared_ptr<NODE_INTF<T>> nodeToBeDeletedPtr) override {}
 
     // find a node
     nonstd::expected<std::string, ERROR_CODES> find(
-        NODE_INTF<T> node) const override {}
+        std::shared_ptr<NODE_INTF<T>> nodePtr) const override {}
 
     // convert to string
     // can get slow for very large lists
