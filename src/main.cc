@@ -39,7 +39,7 @@ int main(void) {
     LinkedList.appendLast(std::make_shared<NODE<int>>(IntNode3));
     LinkedList.insertFirst(std::make_shared<NODE<int>>(IntNode4));
 
-    std::cout << std::endl << LinkedList << std::endl;
+    LinkedList.print();
 
     return 0;
 }

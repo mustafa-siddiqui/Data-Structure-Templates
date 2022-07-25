@@ -127,6 +127,11 @@ public:
         return strRepr += "}";
     }
 
+    // print list to console
+    void print() const override {
+        std::cout << this->toString() << std::endl;
+    }
+
     // '<<' operator overload
     friend std::ostream& operator<<(
         std::ostream& os, const LINKED_LIST<T>& linkedListObj) {

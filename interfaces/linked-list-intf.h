@@ -108,6 +108,11 @@ public:
      * @brief Convert linked list into a string representation.
      */
     virtual std::string toString() const = 0;
+
+    /**
+     * @brief Print list to console.
+     */
+    virtual void print() const = 0;
 };
 
 #endif /* LINKED_LIST_INTF_H_ */
