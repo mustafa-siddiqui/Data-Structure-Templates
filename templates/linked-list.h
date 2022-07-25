@@ -60,50 +60,26 @@ public:
     // append to end of list
     void appendLast(NODE_INTF<T> node) override {}
 
-    // append to end of list [overload]
-    void appendLast(std::string const id, T value) override {}
-
     // insert at start of list
     void insertFirst(NODE_INTF<T> node) override {}
-
-    // insert at start of list [overload]
-    void insertFirst(std::string const id, T value) override {}
 
     // insert before a node
     nonstd::expected<void, ERROR_CODES> insertBefore(
         NODE_INTF<T>& nodePresent,
         NODE_INTF<T> nodeToBeInserted) override {}
 
-    // insert before a node [overload]
-    nonstd::expected<void, ERROR_CODES> insertBefore(
-        std::string const presentNodeId, std::string const id,
-        T value) override {}
-
     // insert after a node
     nonstd::expected<void, ERROR_CODES> insertAfter(
         NODE_INTF<T>& nodePresent,
         NODE_INTF<T> nodeToBeInserted) override {}
 
-    // insert after a node [overload]
-    nonstd::expected<void, ERROR_CODES> insertAfter(
-        std::string const presentNodeId, std::string const id,
-        T value) override {}
-
     // delete a node
     nonstd::expected<void, ERROR_CODES> deleteNode(
         NODE_INTF<T> nodeToBeDeleted) override {}
 
-    // delete node(s) [overload]
-    nonstd::expected<void, ERROR_CODES> deleteNode(
-        std::string const id, T value = static_cast<T>(0)) override {}
-
     // find a node
     nonstd::expected<std::string, ERROR_CODES> find(
         NODE_INTF<T> node) const override {}
-
-    // find a node [overload]
-    nonstd::expected<int, ERROR_CODES> find(
-        std::string const id) const override {}
 
     // convert to string
     // can get slow for very large lists
