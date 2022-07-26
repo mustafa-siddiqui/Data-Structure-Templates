@@ -68,8 +68,7 @@ public:
     // append to end of list
     void appendLast(std::shared_ptr<NODE_INTF<T>> nodePtr) override {
         if (!nodePtr) {
-            LOGGING::logMessage(nodePtr->toString() +
-                                "null -> not added to list");
+            LOGGING::logMessage("Cannot append a null node!");
             return;
         }
 
@@ -81,8 +80,7 @@ public:
     // insert at start of list
     void insertFirst(std::shared_ptr<NODE_INTF<T>> nodePtr) override {
         if (!nodePtr) {
-            LOGGING::logMessage(nodePtr->toString() +
-                                " null -> not added to list");
+            LOGGING::logMessage("Cannot insert a null node!");
             return;
         }
 
