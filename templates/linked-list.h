@@ -42,12 +42,8 @@ private:
     // ideally for unique allotment of ids, a hashmap
     // should be used
     void setNodeID(std::shared_ptr<NODE_INTF<T>> nodePtr) {
-        // if this is the first node in the list, id=0
-        // To-Do: define operators for node class first
-
         if (this->tailPtr) {
             nodePtr->setID(this->tailPtr->getID()++);
-            return;
         }
     }
 
@@ -61,12 +57,19 @@ public:
         : LINKED_LIST_INTF<T>(), headPtr(head), tailPtr(tail) {
         assert(this->headPtr != nullptr);
 
-        // set size
+        // set size and id
         // we know that headPtr cannot be null
+        this->headPtr->setID(0);
         if (this->tailPtr) {
             size = 2;
+            this->tailPtr->setID(1);
         } else {
             size = 1;
+        }
+
+        // if tail node not given, set head as tail
+        if (!tailPtr) {
+            this->tailPtr = this->headPtr;
         }
 
         this->headPtr->setNextNodePtr(this->tailPtr);
@@ -95,11 +98,12 @@ public:
             return;
         }
 
+        this->setNodeID(nodePtr);
+        ++this->size;
+
         nodePtr->setPrevNodePtr(this->tailPtr);
         this->tailPtr->setNextNodePtr(nodePtr);
         this->tailPtr = nodePtr;
-
-        this->size = this->getSize()++;
     }
 
     // insert at start of list
@@ -108,6 +112,9 @@ public:
             LOGGING::logMessage("Cannot insert a null node!");
             return;
         }
+
+        this->setNodeID(nodePtr);
+        ++this->size;
 
         nodePtr->setNextNodePtr(this->headPtr);
         this->headPtr->setPrevNodePtr(nodePtr);
@@ -133,7 +140,7 @@ public:
         std::shared_ptr<NODE_INTF<T>> nodePtr) const override {}
 
     // size of list
-    int getSize() const {}
+    int getSize() const { return this->size; }
 
     // convert to string
     // can get slow for very large lists
