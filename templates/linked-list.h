@@ -41,9 +41,9 @@ private:
     // set id of specified node
     // ideally for unique allotment of ids, a hashmap
     // should be used
-    void setNodeID(std::shared_ptr<NODE_INTF<T>> nodePtr) {
+    void setNodeID(std::shared_ptr<NODE_INTF<T>> nodePtr) override {
         if (this->tailPtr) {
-            nodePtr->setID(this->tailPtr->getID()++);
+            nodePtr->setID(this->tailPtr->getID() + 1);
         }
     }
 
@@ -91,6 +91,8 @@ public:
                             " at head destroyed");
     }
 
+    std::shared_ptr<NODE_INTF<T>> getHead() { return this->headPtr; }
+
     // append to end of list
     void appendLast(std::shared_ptr<NODE_INTF<T>> nodePtr) override {
         if (!nodePtr) {
@@ -132,15 +134,64 @@ public:
         std::shared_ptr<NODE_INTF<T>> nodeToBeInsertedPtr) override {}
 
     // delete a node
-    nonstd::expected<void, ERROR_CODES> deleteNode(
-        std::shared_ptr<NODE_INTF<T>> nodeToBeDeletedPtr) override {}
+    nonstd::expected<bool, ERROR_CODES> deleteNode(
+        std::shared_ptr<NODE_INTF<T>> nodeToBeDeletedPtr) override {
+        bool deleted = false;
+
+        // check boundary cases for faster execution
+        if (nodeToBeDeletedPtr == this->headPtr) {
+            this->headPtr->getNextNodePtr()->getPrevNodePtr().reset();
+            this->headPtr = this->headPtr->getNextNodePtr();
+
+            deleted = true;
+            LOGGING::logMessage("Head node " + nodeToBeDeletedPtr->toString() +
+                                " deleted");
+        } else if (nodeToBeDeletedPtr == this->tailPtr) {
+            this->tailPtr->getPrevNodePtr()->getNextNodePtr().reset();
+            this->tailPtr = this->tailPtr->getPrevNodePtr();
+
+            deleted = true;
+            LOGGING::logMessage("Tail node " + nodeToBeDeletedPtr->toString() +
+                                " deleted");
+        } else {
+            // iterate over list until we reach the node
+            std::shared_ptr<NODE_INTF<T>> currPtr;
+            for (currPtr = this->headPtr; currPtr != nullptr;
+                 currPtr = currPtr->getNextNodePtr()) {
+                if (currPtr == nodeToBeDeletedPtr) {
+                    std::shared_ptr<NODE_INTF<T>> temp =
+                        currPtr->getPrevNodePtr();
+                    currPtr->getNextNodePtr()->setPrevNodePtr(temp);
+
+                    temp = currPtr->getNextNodePtr();
+                    currPtr->getPrevNodePtr()->setNextNodePtr(temp);
+                    currPtr.reset();
+
+                    deleted = true;
+                    LOGGING::logMessage("Middle node " +
+                                        nodeToBeDeletedPtr->toString() +
+                                        " deleted");
+                }
+            }
+        }
+
+        if (!deleted) {
+            LOGGING::logMessage(nodeToBeDeletedPtr->toString() +
+                                " not found in list");
+            return nonstd::make_unexpected<ERROR_CODES>(
+                ERROR_CODES::NODE_NOT_FOUND);
+        }
+
+        --this->size;
+        return true;
+    }
 
     // find a node
     nonstd::expected<std::string, ERROR_CODES> find(
         std::shared_ptr<NODE_INTF<T>> nodePtr) const override {}
 
     // size of list
-    int getSize() const { return this->size; }
+    int getSize() const override { return this->size; }
 
     // convert to string
     // can get slow for very large lists
