@@ -97,9 +97,9 @@ public:
      * @brief Delete given node from the list. Do nothing if node
      * not present in the list.
      * @param nodeToBeDeletedPtr Pointer of node to delete from list
-     * @return nothing if successful, error code otherwise
+     * @return true if successful, error code otherwise
      */
-    virtual nonstd::expected<void, ERROR_CODES> deleteNode(
+    virtual nonstd::expected<bool, ERROR_CODES> deleteNode(
         std::shared_ptr<NODE_INTF<T>> nodeToBeDeletedPtr) = 0;
 
     /**
