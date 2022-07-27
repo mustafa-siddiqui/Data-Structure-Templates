@@ -34,7 +34,7 @@
 template <typename T>
 class NODE : public NODE_INTF<T> {
 private:
-    const uint32_t myId;
+    uint32_t myId;
     T myVal;
     std::shared_ptr<NODE_INTF<T>> nextNodePtr;
     std::shared_ptr<NODE_INTF<T>> prevNodePtr;
@@ -64,6 +64,9 @@ public:
     ~NODE() override {
         LOGGING::logMessage(this->toString() + " destroyed");
     }
+
+    // set id of object
+    void setID(uint32_t newId) override { this->myId = newId; }
 
     // return id of object
     uint32_t getID() const override { return this->myId; }

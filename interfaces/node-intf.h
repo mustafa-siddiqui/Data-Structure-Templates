@@ -37,16 +37,22 @@ public:
     virtual ~NODE_INTF() = default;
 
     /**
-     * @brief Get the value stored in the node.
-     * @return value of node of type T
+     * @brief Set the ID of the node.
+     * @param newId ID to be set
      */
-    virtual T getValue() const = 0;
+    virtual void setID(uint32_t newId) = 0;
 
     /**
      * @brief Get the ID of the node.
      * @return a string represting the ID.
      */
     virtual uint32_t getID() const = 0;
+
+    /**
+     * @brief Get the value stored in the node.
+     * @return value of node of type T
+     */
+    virtual T getValue() const = 0;
 
     /**
      * @brief Set the next node of this node to the
