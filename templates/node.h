@@ -45,7 +45,7 @@ public:
 
     // constructor
     // default values of empty string and val=0
-    explicit NODE(uint32_t id = 0, T value = 0)
+    explicit NODE(T value, uint32_t id = 0)
         : NODE_INTF<T>(),
           myId(id),
           myVal(value),
@@ -105,6 +105,12 @@ public:
                                     const NODE<T>& nodeObj) {
         os << nodeObj.toString();
         return os;
+    }
+
+    // '==' operator overload
+    friend bool operator==(const NODE_INTF<T>& lhs, const NODE_INTF<T>& rhs) {
+        LOGGING::logMessage("NODE == operator used");
+        return (lhs.getID() == rhs.getID() && lhs.getValue() == rhs.getValue());
     }
 };
 
