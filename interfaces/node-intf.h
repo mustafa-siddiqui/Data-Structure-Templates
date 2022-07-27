@@ -46,7 +46,7 @@ public:
      * @brief Get the ID of the node.
      * @return a string represting the ID.
      */
-    virtual std::string getID() const = 0;
+    virtual uint32_t getID() const = 0;
 
     /**
      * @brief Set the next node of this node to the

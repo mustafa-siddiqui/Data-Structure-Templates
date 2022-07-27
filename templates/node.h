@@ -34,7 +34,7 @@
 template <typename T>
 class NODE : public NODE_INTF<T> {
 private:
-    const std::string myId;
+    const uint32_t myId;
     T myVal;
     std::shared_ptr<NODE_INTF<T>> nextNodePtr;
     std::shared_ptr<NODE_INTF<T>> prevNodePtr;
@@ -45,7 +45,7 @@ public:
 
     // constructor
     // default values of empty string and val=0
-    explicit NODE(std::string id = "", T value = 0)
+    explicit NODE(uint32_t id = 0, T value = 0)
         : NODE_INTF<T>(),
           myId(id),
           myVal(value),
@@ -66,7 +66,7 @@ public:
     }
 
     // return id of object
-    std::string getID() const override { return this->myId; }
+    uint32_t getID() const override { return this->myId; }
 
     // return value stored in object
     T getValue() const override { return this->myVal; }
@@ -109,21 +109,21 @@ public:
 template <typename T>
 std::string NODE<T>::toString(void) const {
     return "[Node Value: " + std::to_string(this->getValue()) +
-           ", Node ID: " + this->getID() + "]";
+           ", Node ID: " + std::to_string(this->getID()) + "]";
 }
 
 // template specialization when type = char
 template <>
 std::string NODE<char>::toString(void) const {
     return "[Node Value: " + std::string(1, this->getValue()) +
-           ", Node ID: " + this->getID() + "]";
+           ", Node ID: " + std::to_string(this->getID()) + "]";
 }
 
 // template specialization when type = string
 template <>
 std::string NODE<std::string>::toString(void) const {
     return "[Node Value: " + this->getValue() +
-           ", Node ID: " + this->getID() + "]";
+           ", Node ID: " + std::to_string(this->getID()) + "]";
 }
 
 #endif /* _NODE_H_ */
