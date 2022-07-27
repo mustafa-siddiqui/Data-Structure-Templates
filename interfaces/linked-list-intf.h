@@ -44,6 +44,12 @@ class LINKED_LIST_INTF {
 protected:
     LINKED_LIST_INTF() = default;
 
+    /**
+     * @brief Set ID of node.
+     * @param nodePtr pointer to node
+     */
+    virtual void setNodeID(std::shared_ptr<NODE_INTF<T>> nodePtr) = 0;
+
 public:
     virtual ~LINKED_LIST_INTF() = default;
 
@@ -103,6 +109,12 @@ public:
      */
     virtual nonstd::expected<std::string, ERROR_CODES> find(
         std::shared_ptr<NODE_INTF<T>> nodePtr) const = 0;
+
+    /**
+     * @brief Get the size of the linked list.
+     * @return # of nodes in the list
+     */
+    virtual int getSize() const = 0;
 
     /**
      * @brief Convert linked list into a string representation.

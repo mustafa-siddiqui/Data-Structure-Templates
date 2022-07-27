@@ -36,6 +36,20 @@ class LINKED_LIST : public LINKED_LIST_INTF<T> {
 private:
     std::shared_ptr<NODE_INTF<T>> headPtr;
     std::shared_ptr<NODE_INTF<T>> tailPtr;
+    int size;
+
+    // set id of specified node
+    // ideally for unique allotment of ids, a hashmap
+    // should be used
+    void setNodeID(std::shared_ptr<NODE_INTF<T>> nodePtr) {
+        // if this is the first node in the list, id=0
+        // To-Do: define operators for node class first
+
+        if (this->tailPtr) {
+            nodePtr->setID(this->tailPtr->getID()++);
+            return;
+        }
+    }
 
 public:
     // delete default constructor
@@ -45,9 +59,18 @@ public:
     LINKED_LIST(std::shared_ptr<NODE_INTF<T>> head,
                 std::shared_ptr<NODE_INTF<T>> tail = nullptr)
         : LINKED_LIST_INTF<T>(), headPtr(head), tailPtr(tail) {
+        assert(this->headPtr != nullptr);
+
+        // set size
+        // we know that headPtr cannot be null
+        if (this->tailPtr) {
+            size = 2;
+        } else {
+            size = 1;
+        }
+
         this->headPtr->setNextNodePtr(this->tailPtr);
         this->tailPtr->setPrevNodePtr(this->headPtr);
-        assert(this->headPtr != nullptr);
 
         LOGGING::logMessage("List with " + headPtr->toString() +
                             " at head created");
@@ -75,6 +98,8 @@ public:
         nodePtr->setPrevNodePtr(this->tailPtr);
         this->tailPtr->setNextNodePtr(nodePtr);
         this->tailPtr = nodePtr;
+
+        this->size = this->getSize()++;
     }
 
     // insert at start of list
@@ -106,6 +131,9 @@ public:
     // find a node
     nonstd::expected<std::string, ERROR_CODES> find(
         std::shared_ptr<NODE_INTF<T>> nodePtr) const override {}
+
+    // size of list
+    int getSize() const {}
 
     // convert to string
     // can get slow for very large lists
