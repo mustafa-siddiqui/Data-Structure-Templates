@@ -80,6 +80,18 @@ public:
     }
 
     /**
+     * @brief Get the node at the head of the list.
+     * @return A pointer to the head node.
+     */
+    std::shared_ptr<NODE_INTF<T>> getHead() { return this->headPtr; }
+
+    /**
+     * @brief Get the node at the tail of the list.
+     * @return A pointer to the tail node.
+     */
+    std::shared_ptr<NODE_INTF<T>> getTail() { return this->tailPtr; }
+
+    /**
      * =====================================================`
      * INTERFACE METHODS DEFINITIONS
      * =====================================================
@@ -90,8 +102,6 @@ public:
         LOGGING::logMessage("List with " + headPtr->toString() +
                             " at head destroyed");
     }
-
-    std::shared_ptr<NODE_INTF<T>> getHead() { return this->headPtr; }
 
     // append to end of list
     void appendLast(std::shared_ptr<NODE_INTF<T>> nodePtr) override {
@@ -141,6 +151,11 @@ public:
         // check boundary cases for faster execution
         if (nodeToBeDeletedPtr == this->headPtr) {
             this->headPtr->getNextNodePtr()->getPrevNodePtr().reset();
+            // temp debug statement
+            std::cout
+                << "Checking: "
+                << this->headPtr->getNextNodePtr()->getPrevNodePtr()->toString()
+                << std::endl;
             this->headPtr = this->headPtr->getNextNodePtr();
 
             deleted = true;
@@ -148,6 +163,11 @@ public:
                                 " deleted");
         } else if (nodeToBeDeletedPtr == this->tailPtr) {
             this->tailPtr->getPrevNodePtr()->getNextNodePtr().reset();
+            // temp debug statement
+            std::cout
+                << "Checking: "
+                << this->tailPtr->getPrevNodePtr()->getNextNodePtr()->toString()
+                << std::endl;
             this->tailPtr = this->tailPtr->getPrevNodePtr();
 
             deleted = true;

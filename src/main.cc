@@ -19,32 +19,29 @@ int main(void) {
     NODE<int> IntNode2(69);
     std::cout << IntNode2 << std::endl;
 
-    NODE<int> IntNode3(70);
-    NODE<int> IntNode4(1000);
-
     LINKED_LIST<int> LinkedList(
         std::make_shared<NODE<int>>(IntNode),
         std::make_shared<NODE<int>>(IntNode2));
     std::cout << std::endl << LinkedList << std::endl;
     std::cout << "Size: " << LinkedList.getSize() << std::endl;
 
-    LinkedList.appendLast(std::make_shared<NODE<int>>(IntNode3));
-    LinkedList.insertFirst(std::make_shared<NODE<int>>(IntNode4));
+    LinkedList.appendLast(std::make_shared<NODE<int>>(70));
+    LinkedList.insertFirst(std::make_shared<NODE<int>>(1000));
 
     LinkedList.print();
     std::cout << "Size: " << LinkedList.getSize() << std::endl;
 
-    // test
-    bool res = true;
-    if (!(*LinkedList.getHead() == IntNode4)) {
-        res = false;
-        std::cout << LinkedList.getHead()->toString() << ", "
-                  << IntNode4.toString() << std::endl;
-    }
-    std::cout << "\nres: " << res << std::endl;
+    // delete head node
+    std::cout << "\nDeleting head node\n";
+    auto nodeToDelete = std::shared_ptr<NODE_INTF<int>>(LinkedList.getHead());
+    LinkedList.deleteNode(nodeToDelete);
+    LinkedList.print();
+    std::cout << "Size: " << LinkedList.getSize() << std::endl;
 
-    std::cout << "\nDeleting node\n";
-    LinkedList.deleteNode(std::make_shared<NODE<int>>(IntNode4));
+    // delete tail node
+    std::cout << "\nDeleting tail node\n";
+    nodeToDelete = std::shared_ptr<NODE_INTF<int>>(LinkedList.getTail());
+    LinkedList.deleteNode(nodeToDelete);
     LinkedList.print();
     std::cout << "Size: " << LinkedList.getSize() << std::endl;
 
