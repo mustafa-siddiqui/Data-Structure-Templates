@@ -2,6 +2,6 @@
 .vscode/
 .DS_Store
 .png
-a.out
+*.out
 ds
 
