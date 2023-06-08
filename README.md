@@ -10,6 +10,6 @@ Node ID assignment seems to be fine. Could be implemented in a more robust and b
 ### To-do
 
 - [x] Fix `LinkedList.deleteNode()`
-- [ ] Implement `LinkedList.find()`
+- [x] Implement `LinkedList.find()`
 - [ ] Implement `LinkedList.insertBefore()`
 - [ ] Implement `LinkedList.insertAfter()`
