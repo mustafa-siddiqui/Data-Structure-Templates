@@ -136,12 +136,16 @@ public:
     // insert before a node
     nonstd::expected<void, ERROR_CODES> insertBefore(
         std::shared_ptr<NODE_INTF<T>> nodePresentPtr,
-        std::shared_ptr<NODE_INTF<T>> nodeToBeInsertedPtr) override {}
+        std::shared_ptr<NODE_INTF<T>> nodeToBeInsertedPtr) override {
+        return nonstd::make_unexpected(ERROR_CODES::STRUCTURE_IS_EMPTY);
+    }
 
     // insert after a node
     nonstd::expected<void, ERROR_CODES> insertAfter(
         std::shared_ptr<NODE_INTF<T>> nodePresentPtr,
-        std::shared_ptr<NODE_INTF<T>> nodeToBeInsertedPtr) override {}
+        std::shared_ptr<NODE_INTF<T>> nodeToBeInsertedPtr) override {
+        return nonstd::make_unexpected(ERROR_CODES::STRUCTURE_IS_EMPTY);
+    }
 
     // delete a node
     nonstd::expected<bool, ERROR_CODES> deleteNode(
@@ -220,7 +224,9 @@ public:
 
     // find a node
     nonstd::expected<std::string, ERROR_CODES> find(
-        std::shared_ptr<NODE_INTF<T>> nodePtr) const override {}
+        std::shared_ptr<NODE_INTF<T>> nodePtr) const override {
+        return nonstd::make_unexpected(ERROR_CODES::STRUCTURE_IS_EMPTY);
+    }
 
     // size of list
     int getSize() const override { return this->size; }
