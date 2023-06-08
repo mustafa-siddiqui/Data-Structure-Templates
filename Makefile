@@ -16,20 +16,22 @@ MAIN_FILE_FOR_LINKED_LIST = src/linkedListUsage.cc
 MAIN_FILE_FOR_NODE = src/nodeUsage.cc
 
 # Generate binaries for all files in src/
-all node linkedlist &: node linkedlist
+# Have to do this dumb stuff because I have an old version of make
+all:
+	${CXX} ${CXXFLAGS} -std=c++14 ${INC} ${FILES} ${MAIN_FILE_FOR_NODE} -o node.out && ${CXX} ${CXXFLAGS} -std=c++14 ${INC} ${FILES} ${MAIN_FILE_FOR_LINKED_LIST} -o ll.out && :
 
 node:
-	${CXX} ${CXXFLAGS} -std=c++14 ${INC} ${FILES} ${MAIN_FILE_FOR_NODE} -o node
+	${CXX} ${CXXFLAGS} -std=c++14 ${INC} ${FILES} ${MAIN_FILE_FOR_NODE} -o node.out
 
 linkedlist:
-	${CXX} ${CXXFLAGS} -std=c++14 ${INC} ${FILES} ${MAIN_FILE_FOR_LINKED_LIST} -o ll
+	${CXX} ${CXXFLAGS} -std=c++14 ${INC} ${FILES} ${MAIN_FILE_FOR_LINKED_LIST} -o ll.out
 
 redirect:
-	${CXX} ${CXXFLAGS} -std=c++14 ${INC} ${FILES} -o ds > makeLog.txt 2>&1
+	${CXX} ${CXXFLAGS} -std=c++14 ${INC} ${FILES} -o ds.out > makeLog.txt 2>&1
 
 debug:
-	${CXX} ${CXXFLAGS} -std=c++14 ${INC} ${FILES} -DDEBUG -o ds
+	${CXX} ${CXXFLAGS} -std=c++14 ${INC} ${FILES} -DDEBUG -o ds.out
 
 clean:
-	rm -f ds && rm -f DSLinkedList && rm -f ll && rm -f node
+	rm -f *.out
  
