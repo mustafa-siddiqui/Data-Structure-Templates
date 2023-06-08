@@ -3,7 +3,7 @@
  * @author Mustafa Siddiqui
  * @brief Implementation of the linked list class template.
  *
- * @copyright Copyright (c) 2022
+ * @copyright Copyright (c) 2023
  *
  */
 
@@ -146,31 +146,24 @@ public:
     // delete a node
     nonstd::expected<bool, ERROR_CODES> deleteNode(
         std::shared_ptr<NODE_INTF<T>> nodeToBeDeletedPtr) override {
-        bool deleted = false;
+        bool deletedByRef = false;
+        bool deletedByValue = false;
 
         // check boundary cases for faster execution
         if (nodeToBeDeletedPtr == this->headPtr) {
             this->headPtr->getNextNodePtr()->getPrevNodePtr().reset();
-            // temp debug statement
-            std::cout
-                << "Checking: "
-                << this->headPtr->getNextNodePtr()->getPrevNodePtr()->toString()
-                << std::endl;
+
             this->headPtr = this->headPtr->getNextNodePtr();
 
-            deleted = true;
+            deletedByRef = true;
             LOGGING::logMessage("Head node " + nodeToBeDeletedPtr->toString() +
                                 " deleted");
         } else if (nodeToBeDeletedPtr == this->tailPtr) {
             this->tailPtr->getPrevNodePtr()->getNextNodePtr().reset();
-            // temp debug statement
-            std::cout
-                << "Checking: "
-                << this->tailPtr->getPrevNodePtr()->getNextNodePtr()->toString()
-                << std::endl;
+
             this->tailPtr = this->tailPtr->getPrevNodePtr();
 
-            deleted = true;
+            deletedByRef = true;
             LOGGING::logMessage("Tail node " + nodeToBeDeletedPtr->toString() +
                                 " deleted");
         } else {
@@ -178,6 +171,7 @@ public:
             std::shared_ptr<NODE_INTF<T>> currPtr;
             for (currPtr = this->headPtr; currPtr != nullptr;
                  currPtr = currPtr->getNextNodePtr()) {
+                // delete by reference
                 if (currPtr == nodeToBeDeletedPtr) {
                     std::shared_ptr<NODE_INTF<T>> temp =
                         currPtr->getPrevNodePtr();
@@ -187,15 +181,33 @@ public:
                     currPtr->getPrevNodePtr()->setNextNodePtr(temp);
                     currPtr.reset();
 
-                    deleted = true;
-                    LOGGING::logMessage("Middle node " +
-                                        nodeToBeDeletedPtr->toString() +
-                                        " deleted");
+                    deletedByRef = true;
+                    LOGGING::logMessage(
+                        "Node " + nodeToBeDeletedPtr->toString() + " deleted");
+                }
+
+                // delete by value (all occurrences) if current node not
+                // already deleted
+                if (!deletedByRef) {
+                    if (currPtr->getValue() == nodeToBeDeletedPtr->getValue()) {
+                        auto temp = currPtr->getPrevNodePtr();
+                        currPtr->getNextNodePtr()->setPrevNodePtr(temp);
+
+                        temp = currPtr->getNextNodePtr();
+                        currPtr->getPrevNodePtr()->setNextNodePtr(temp);
+
+                        // node gets deleted when it goes out of scope
+
+                        deletedByValue = true;
+                        LOGGING::logMessage("Node " +
+                                            nodeToBeDeletedPtr->toString() +
+                                            " deleted");
+                    }
                 }
             }
         }
 
-        if (!deleted) {
+        if (!deletedByRef && !deletedByValue) {
             LOGGING::logMessage(nodeToBeDeletedPtr->toString() +
                                 " not found in list");
             return nonstd::make_unexpected<ERROR_CODES>(
@@ -218,27 +230,22 @@ public:
     std::string toString() const override {
         std::string strRepr("{");
         std::shared_ptr<NODE_INTF<T>> currPtr;
-        for (currPtr = this->headPtr; currPtr != nullptr;
+        for (currPtr = this->headPtr; currPtr != this->tailPtr;
              currPtr = currPtr->getNextNodePtr()) {
             strRepr += currPtr->toString();
-
-            // append comma except after last node
-            if (currPtr != this->tailPtr) {
-                strRepr += ", ";
-            }
+            strRepr += ", ";
         }
 
+        strRepr += this->tailPtr->toString();
         return strRepr += "}";
     }
 
     // print list to console
-    void print() const override {
-        std::cout << this->toString() << std::endl;
-    }
+    void print() const override { std::cout << this->toString() << std::endl; }
 
     // '<<' operator overload
-    friend std::ostream& operator<<(
-        std::ostream& os, const LINKED_LIST<T>& linkedListObj) {
+    friend std::ostream& operator<<(std::ostream& os,
+                                    const LINKED_LIST<T>& linkedListObj) {
         os << linkedListObj.toString();
         return os;
     }
