@@ -223,9 +223,19 @@ public:
     }
 
     // find a node
-    nonstd::expected<std::string, ERROR_CODES> find(
+    nonstd::expected<uint32_t, ERROR_CODES> find(
         std::shared_ptr<NODE_INTF<T>> nodePtr) const override {
-        return nonstd::make_unexpected(ERROR_CODES::STRUCTURE_IS_EMPTY);
+        // iterate over list until we reach the node
+        std::shared_ptr<NODE_INTF<T>> currPtr;
+        for (currPtr = this->headPtr;
+             currPtr != this->tailPtr->getNextNodePtr();
+             currPtr = currPtr->getNextNodePtr()) {
+            if (currPtr == nodePtr) {
+                return currPtr->getID();
+            }
+        }
+
+        return nonstd::make_unexpected(ERROR_CODES::NODE_NOT_FOUND);
     }
 
     // size of list

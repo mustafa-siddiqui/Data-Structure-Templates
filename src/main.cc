@@ -65,5 +65,14 @@ int main(void) {
         std::cout << ERROR_CODES_FUNC::toString(retVal.error()) << std::endl;
     }
 
+    // find node
+    auto retVal1 = LinkedList.find(node);
+    if (retVal1) {
+        std::cout << "Node with id {" << retVal1.value() << "} found"
+                  << std::endl;
+    } else {
+        std::cout << ERROR_CODES_FUNC::toString(retVal1.error()) << std::endl;
+    }
+
     return 0;
 }

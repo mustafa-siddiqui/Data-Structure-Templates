@@ -57,16 +57,14 @@ public:
      * @brief Append a node to the end of the list.
      * @param nodePtr A node object pointer
      */
-    virtual void appendLast(
-        std::shared_ptr<NODE_INTF<T>> nodePtr) = 0;
+    virtual void appendLast(std::shared_ptr<NODE_INTF<T>> nodePtr) = 0;
 
     /**
      * @brief Insert a node to the head of the list. Will
      * replace the head node of the list and will point to it.
      * @param nodePtr A node object pointer
      */
-    virtual void insertFirst(
-        std::shared_ptr<NODE_INTF<T>> nodePtr) = 0;
+    virtual void insertFirst(std::shared_ptr<NODE_INTF<T>> nodePtr) = 0;
 
     /**
      * @brief Insert a node after a specified node in the list
@@ -105,9 +103,9 @@ public:
     /**
      * @brief Search for a node in the list.
      * @param nodePtr Pointer node to search for in the list
-     * @return ID of string if present, error otherwise
+     * @return ID of node if present, error otherwise
      */
-    virtual nonstd::expected<std::string, ERROR_CODES> find(
+    virtual nonstd::expected<uint32_t, ERROR_CODES> find(
         std::shared_ptr<NODE_INTF<T>> nodePtr) const = 0;
 
     /**
