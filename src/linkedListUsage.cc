@@ -19,8 +19,10 @@ int main(void) {
     NODE<int> IntNode2(69);
     std::cout << IntNode2 << std::endl;
 
-    LINKED_LIST<int> LinkedList(std::make_shared<NODE<int>>(IntNode),
-                                std::make_shared<NODE<int>>(IntNode2));
+    auto IntNodePtr = std::make_shared<NODE<int>>(IntNode);
+    auto IntNode2Ptr = std::make_shared<NODE<int>>(IntNode2);
+
+    LINKED_LIST<int> LinkedList(IntNodePtr, IntNode2Ptr);
     std::cout << std::endl << LinkedList << std::endl;
     std::cout << "Size: " << LinkedList.getSize() << std::endl;
 
@@ -66,6 +68,7 @@ int main(void) {
     }
 
     // find node
+    std::cout << "\nFinding a node\n";
     auto retVal1 = LinkedList.find(node);
     if (retVal1) {
         std::cout << "Node with id {" << retVal1.value() << "} found"
@@ -75,6 +78,7 @@ int main(void) {
     }
 
     // insert before
+    std::cout << "\nInserting node before another node\n";
     auto retVal2 =
         LinkedList.insertBefore(node, std::make_shared<NODE<int>>(999));
     if (retVal2) {
@@ -86,8 +90,33 @@ int main(void) {
     }
 
     // insert before head
+    std::cout << "\nInserting before head node\n";
     retVal2 = LinkedList.insertBefore(LinkedList.getHead(),
                                       std::make_shared<NODE<int>>(999));
+    if (retVal2) {
+        LinkedList.print();
+        std::cout << "Size: " << LinkedList.getSize() << std::endl;
+
+    } else {
+        std::cout << ERROR_CODES_FUNC::toString(retVal2.error()) << std::endl;
+    }
+
+    // insert after
+    std::cout << "\nInserting after a node\n";
+    retVal2 =
+        LinkedList.insertAfter(IntNodePtr, std::make_shared<NODE<int>>(179));
+    if (retVal2) {
+        LinkedList.print();
+        std::cout << "Size: " << LinkedList.getSize() << std::endl;
+
+    } else {
+        std::cout << ERROR_CODES_FUNC::toString(retVal2.error()) << std::endl;
+    }
+
+    // insert after tail
+    std::cout << "\nInserting after tail node\n";
+    retVal2 = LinkedList.insertAfter(LinkedList.getTail(),
+                                     std::make_shared<NODE<int>>(200));
     if (retVal2) {
         LinkedList.print();
         std::cout << "Size: " << LinkedList.getSize() << std::endl;

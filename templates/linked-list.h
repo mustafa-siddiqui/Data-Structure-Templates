@@ -161,6 +161,7 @@ public:
         nodeToBeInsertedPtr->setNextNodePtr(nodePresentPtr);
         nodeToBeInsertedPtr->setPrevNodePtr(prevNode);
         prevNode->setNextNodePtr(nodeToBeInsertedPtr);
+        nodePresentPtr->setPrevNodePtr(nodeToBeInsertedPtr);
 
         return true;
     }
@@ -169,7 +170,34 @@ public:
     nonstd::expected<bool, ERROR_CODES> insertAfter(
         std::shared_ptr<NODE_INTF<T>> nodePresentPtr,
         std::shared_ptr<NODE_INTF<T>> nodeToBeInsertedPtr) override {
-        return nonstd::make_unexpected(ERROR_CODES::STRUCTURE_IS_EMPTY);
+        // confirm a valid node is requested to be inserted
+        if (!nodeToBeInsertedPtr) {
+            LOGGING::logMessage("Cannot insert a null node!");
+            return nonstd::make_unexpected(ERROR_CODES::STRUCTURE_IS_EMPTY);
+        }
+
+        // confirm requested node exists
+        auto node = this->find(nodePresentPtr);
+        if (!node) {
+            return nonstd::make_unexpected(ERROR_CODES::NODE_NOT_FOUND);
+        }
+
+        // handle corner cases
+        if (nodePresentPtr == this->getTail()) {
+            this->appendLast(nodeToBeInsertedPtr);
+            return true;
+        }
+
+        this->setNodeID(nodeToBeInsertedPtr);
+        ++this->size;
+
+        auto nextNode = nodePresentPtr->getNextNodePtr();
+        nodeToBeInsertedPtr->setNextNodePtr(nextNode);
+        nodeToBeInsertedPtr->setPrevNodePtr(nodePresentPtr);
+        nextNode->setPrevNodePtr(nodeToBeInsertedPtr);
+        nodePresentPtr->setNextNodePtr(nodeToBeInsertedPtr);
+
+        return true;
     }
 
     // delete a node
