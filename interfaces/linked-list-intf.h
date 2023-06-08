@@ -73,8 +73,9 @@ public:
      * @param nodePresentPtr Specified node pointer in the list.
      * @param nodeToBeInsertedPtr Node object pointer to be inserted
      * in the list.
+     * @return true if successful, error code otherwise
      */
-    virtual nonstd::expected<void, ERROR_CODES> insertBefore(
+    virtual nonstd::expected<bool, ERROR_CODES> insertBefore(
         std::shared_ptr<NODE_INTF<T>> nodePresentPtr,
         std::shared_ptr<NODE_INTF<T>> nodeToBeInsertedPtr) = 0;
 
@@ -85,9 +86,9 @@ public:
      * @param nodePresentPtr Specified node pointer in the list.
      * @param nodeToBeInsertedPtr Node object pointer to be inserted
      * in the list.
-     * @return nothing if successful, error code otherwise
+     * @return true if successful, error code otherwise
      */
-    virtual nonstd::expected<void, ERROR_CODES> insertAfter(
+    virtual nonstd::expected<bool, ERROR_CODES> insertAfter(
         std::shared_ptr<NODE_INTF<T>> nodePresentPtr,
         std::shared_ptr<NODE_INTF<T>> nodeToBeInsertedPtr) = 0;
 

@@ -39,11 +39,10 @@ private:
     int size;
 
     // set id of specified node
-    // ideally for unique allotment of ids, a hashmap
-    // should be used
     void setNodeID(std::shared_ptr<NODE_INTF<T>> nodePtr) override {
+        static int lastSetID = 0;
         if (this->tailPtr) {
-            nodePtr->setID(this->tailPtr->getID() + 1);
+            nodePtr->setID(lastSetID++);
         }
     }
 
@@ -59,10 +58,10 @@ public:
 
         // set size and id
         // we know that headPtr cannot be null
-        this->headPtr->setID(0);
+        this->setNodeID(this->headPtr);
         if (this->tailPtr) {
             size = 2;
-            this->tailPtr->setID(1);
+            this->setNodeID(this->tailPtr);
         } else {
             size = 1;
         }
@@ -134,14 +133,40 @@ public:
     }
 
     // insert before a node
-    nonstd::expected<void, ERROR_CODES> insertBefore(
+    nonstd::expected<bool, ERROR_CODES> insertBefore(
         std::shared_ptr<NODE_INTF<T>> nodePresentPtr,
         std::shared_ptr<NODE_INTF<T>> nodeToBeInsertedPtr) override {
-        return nonstd::make_unexpected(ERROR_CODES::STRUCTURE_IS_EMPTY);
+        // confirm a valid node is requested to be inserted
+        if (!nodeToBeInsertedPtr) {
+            LOGGING::logMessage("Cannot insert a null node!");
+            return nonstd::make_unexpected(ERROR_CODES::STRUCTURE_IS_EMPTY);
+        }
+
+        // confirm requested node exists
+        auto node = this->find(nodePresentPtr);
+        if (!node) {
+            return nonstd::make_unexpected(ERROR_CODES::NODE_NOT_FOUND);
+        }
+
+        // handle corner cases
+        if (nodePresentPtr == this->getHead()) {
+            this->insertFirst(nodeToBeInsertedPtr);
+            return true;
+        }
+
+        this->setNodeID(nodeToBeInsertedPtr);
+        ++this->size;
+
+        auto prevNode = nodePresentPtr->getPrevNodePtr();
+        nodeToBeInsertedPtr->setNextNodePtr(nodePresentPtr);
+        nodeToBeInsertedPtr->setPrevNodePtr(prevNode);
+        prevNode->setNextNodePtr(nodeToBeInsertedPtr);
+
+        return true;
     }
 
     // insert after a node
-    nonstd::expected<void, ERROR_CODES> insertAfter(
+    nonstd::expected<bool, ERROR_CODES> insertAfter(
         std::shared_ptr<NODE_INTF<T>> nodePresentPtr,
         std::shared_ptr<NODE_INTF<T>> nodeToBeInsertedPtr) override {
         return nonstd::make_unexpected(ERROR_CODES::STRUCTURE_IS_EMPTY);

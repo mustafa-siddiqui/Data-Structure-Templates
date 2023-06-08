@@ -74,5 +74,27 @@ int main(void) {
         std::cout << ERROR_CODES_FUNC::toString(retVal1.error()) << std::endl;
     }
 
+    // insert before
+    auto retVal2 =
+        LinkedList.insertBefore(node, std::make_shared<NODE<int>>(999));
+    if (retVal2) {
+        LinkedList.print();
+        std::cout << "Size: " << LinkedList.getSize() << std::endl;
+
+    } else {
+        std::cout << ERROR_CODES_FUNC::toString(retVal2.error()) << std::endl;
+    }
+
+    // insert before head
+    retVal2 = LinkedList.insertBefore(LinkedList.getHead(),
+                                      std::make_shared<NODE<int>>(999));
+    if (retVal2) {
+        LinkedList.print();
+        std::cout << "Size: " << LinkedList.getSize() << std::endl;
+
+    } else {
+        std::cout << ERROR_CODES_FUNC::toString(retVal2.error()) << std::endl;
+    }
+
     return 0;
 }
