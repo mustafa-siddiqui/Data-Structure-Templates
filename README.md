@@ -6,6 +6,22 @@ Made as a learning project to learn and implement modern C++ functionalities inc
 ## Overview
 Custom data structures like a node, doubly linked list and more (to come).
 
+## Building
+To compile all targets (all individual files in `src`), run:
+```bash
+make all
+```
+
+To compile individual targets (see `Makefile` for target names), run:
+```bash
+make <target-name>
+```
+
+For example, to build for linked list usage only:
+```bash
+make linkedlist
+```
+
 ## Sample Usage
 Sample usage files are in `src` e.g. `src/linkedListUsage.cc`
 
